@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1035242374996",
+    "firebase_url": "https://blistering-torch-8487.firebaseio.com",
+    "project_id": "blistering-torch-8487",
+    "storage_bucket": "blistering-torch-8487.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1035242374996:android:ca5515ab1867cf06",
+        "android_client_info": {
+          "package_name": "com.polito.fez.domotichome"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1035242374996-bcvlgsj6s6t1bvglltap9l7lit6ofl0t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYRmaB03g6KwW2hyTBiZ-5FtHpjwd2jbs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

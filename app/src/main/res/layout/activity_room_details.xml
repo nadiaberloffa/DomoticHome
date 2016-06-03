@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.polito.fez.domotichome.RoomDetailsActivity">
+
+    <TextView
+        android:id="@+id/txtTemperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textNormalSize"
+        android:text="20.2 °C"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:drawableLeft="@drawable/ic_temperature"
+        android:drawableStart="@drawable/ic_temperature"
+        android:layout_marginLeft="@dimen/text_margin"
+        android:layout_marginStart="@dimen/text_margin"
+        android:layout_marginBottom="@dimen/text_margin"
+        android:layout_marginTop="@dimen/text_margin"/>
+
+    <TextView
+        android:id="@+id/txtHumidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/textNormalSize"
+        android:text="45%"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:drawableLeft="@drawable/ic_humidity"
+        android:drawableStart="@drawable/ic_humidity"
+        android:layout_toRightOf="@id/txtTemperature"
+        android:layout_marginLeft="@dimen/text_margin"
+        android:layout_marginStart="@dimen/text_margin"
+        android:layout_marginBottom="@dimen/text_margin"
+        android:layout_marginTop="@dimen/text_margin"/>
+
+    <LinearLayout
+        android:id="@+id/linTemp"
+        android:layout_below="@id/txtTemperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="50dp"
+            android:minWidth="50dp"
+            app:srcCompat="@drawable/ic_fire"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/txtEditTemperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/textTemperatureBig"
+            android:text="22.00"/>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btnMinusTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linTemp"
+        android:layout_alignLeft="@id/linTemp"
+        app:srcCompat="@drawable/ic_remove_orange_48dp"
+
+        android:background="@drawable/round_button_trasparent"/>
+
+    <ImageButton
+        android:id="@+id/btnPlusTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linTemp"
+        android:layout_alignRight="@id/linTemp"
+        app:srcCompat="@drawable/ic_add_orange_48dp"
+        android:background="@drawable/round_button_trasparent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/btnMinusTemp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:gravity="center">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/light_label"
+            android:background="@drawable/square_button_trasparent"
+            android:drawableTop="@drawable/ic_light_off"
+            android:padding="@dimen/text_padding"
+            android:layout_margin="@dimen/activity_horizontal_margin"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/warm_label"
+            android:background="@drawable/square_button_trasparent"
+            android:drawableTop="@drawable/ic_warm_off"
+            android:padding="@dimen/text_padding"
+            android:layout_margin="@dimen/activity_horizontal_margin"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/bell_label"
+            android:background="@drawable/square_button_trasparent"
+            android:drawableTop="@drawable/ic_bell"
+            android:padding="@dimen/text_padding"
+            android:layout_margin="@dimen/activity_horizontal_margin"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
