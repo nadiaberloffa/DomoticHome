@@ -1,10 +1,14 @@
 package com.polito.fez.domotichome;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.polito.fez.domotichome.datastructure.StateData;
 import com.polito.fez.domotichome.firebase.SingletonCallback;
@@ -20,20 +24,43 @@ public class RoomDetailsActivity extends AppCompatActivity {
     private List<StateData> statesList;
     private float temperature;
     private float humidity;
-    private boolean light;
-    private boolean warm;
+    private boolean lightOn;
+    private boolean warmOn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room_details);
+        
+        int roomID = getIntent().getIntExtra("roomID",-1);
+        if(roomID==-1){
+            Toast.makeText(RoomDetailsActivity.this, getString(R.string.generic_error), Toast.LENGTH_SHORT).show();
+            finish();
+        }else {
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarBack);
+            if (toolbar != null) {
+                toolbar.setTitle(String.format(getString(R.string.room_name), roomID));
+                toolbar.setTitleTextColor(ContextCompat.getColor(this.getApplicationContext(), R.color.colorTitleToolbar));
+                setSupportActionBar(toolbar);
+                toolbar.setNavigationOnClickListener(new View.OnClickListener() {  //se click su "indietro"
+                    @Override
+                    public void onClick(View v) {
+                        finish();
+                    }
+                });
+            }
+            setInfoIntoView();
+        }
+    }
+
+    private void setInfoIntoView() {
 
         this.txtEditTemp = (TextView) findViewById(R.id.txtEditTemperature);
         this.txtHumidity = (TextView) findViewById(R.id.txtHumidity);
         this.txtTemperature = (TextView) findViewById(R.id.txtTemperature);
         this.btnPlus = (ImageButton) findViewById(R.id.btnPlusTemp);
         this.btnMinus = (ImageButton) findViewById(R.id.btnMinusTemp);
-        
+
         SingletonManager.getStates(new SingletonCallback() {
             @Override
             public void doCallback(Object dataReturned) {
@@ -41,38 +68,41 @@ public class RoomDetailsActivity extends AppCompatActivity {
 
                 statesList = statesMap.entrySet().iterator().next().getValue();
 
-                for (StateData state: statesList) {
-                    switch(state.getCodeEventType()) {
+                for (StateData state : statesList) {
+
+                    switch (state.getCodeEventType()) {
                         case temperature:
+                            Log.d("debugGiulia","temperature: "+state.getValueRead());
                             temperature = state.getValueRead();
                             txtEditTemp.setText(String.format("%.2f", temperature));
                             txtEditTemp.setText(String.format("%.2f", temperature));
                             txtTemperature.setText(String.format("%.2f", temperature));
                             break;
                         case humidity:
+                            Log.d("debugGiulia","humidity: "+state.getValueRead());
                             humidity = state.getValueRead();
                             txtHumidity.setText(String.format("%.2f", humidity));
                             break;
                         case light:
-                            if(state.getValueRead() == 0) {
-                                light = false;
+                            if (state.getValueRead() == 0) {
+                                lightOn = false;
                             } else {
-                                light = true;
+                                lightOn = true;
                             }
+                            Log.d("debugGiulia","light: "+lightOn);
                             break;
                         case warm:
-                            if(state.getValueRead() == 0) {
-                                warm = false;
+                            if (state.getValueRead() == 0) {
+                                warmOn = false;
                             } else {
-                                warm = true;
+                                warmOn = true;
                             }
+                            Log.d("debugGiulia","warmOn: "+warmOn);
                             break;
                     }
                 }
             }
         });
-
-
 
         this.btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,11 +115,12 @@ public class RoomDetailsActivity extends AppCompatActivity {
         this.btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if((temperature - 0.5f) >= 0) {
+                if ((temperature - 0.5f) >= 0) {
                     temperature -= 0.5f;
                     txtEditTemp.setText(String.format("%.2f", temperature));
                 }
             }
         });
     }
+
 }

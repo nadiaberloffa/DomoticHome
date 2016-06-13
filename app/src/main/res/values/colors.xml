@@ -8,4 +8,5 @@
     <color name="colorHintDark">#9e9e9e</color>
     <color name="colorText">#212121</color>
     <color name="backgroundPhoto">#e1dddd</color>
+    <color name="colorTitleToolbar">#FFFFFF</color>
 </resources>

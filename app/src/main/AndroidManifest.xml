@@ -18,9 +18,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".RoomDetailsActivity">
+        <activity android:name=".RoomDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
         </activity>
-        <activity android:name=".BellEventsActivity">
+        <activity android:name=".BellEventsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 
