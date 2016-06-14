@@ -113,6 +113,13 @@ public class MainActivity extends AppCompatActivity
                 txtHumidity3.setText(" - ");
             }
         });
+
+        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.sharedPref), 0);
+        if(sharedPref.contains("email")) {
+            final View headerLayout = navigationView.getHeaderView(0);
+            TextView mailHeader = (TextView) headerLayout.findViewById(R.id.mail);
+            mailHeader.setText(sharedPref.getString("email", ""));
+        }
     }
 
     public void clickRoom1(View view) {
