@@ -1,6 +1,12 @@
 package com.polito.fez.domotichome.firebase;
 
-import com.google.firebase.database.ChildEventListener;
+import android.support.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -13,12 +19,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Nadia on 24/05/2016.
- */
 public class SingletonManager {
 
     private static Map<Integer, List<StateData>> states;
+    private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     private SingletonManager() {}
 
@@ -63,5 +67,28 @@ public class SingletonManager {
         }
     }
 
+    public static void login(final String email, final String password, final SingletonCallback callback) {
 
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        final FirebaseUser userFirebase = firebaseAuth.getCurrentUser();
+
+                        if (userFirebase != null) {
+                            if (!task.isSuccessful())
+                                callback.doCallback(false);
+                            else
+                                callback.doCallback(true);
+                        } else
+                            callback.doCallback(false);
+                    }
+                });
+    }
+
+    public static void logout(final SingletonCallback callback){
+        firebaseAuth.signOut();
+        callback.doCallback(true);
+    }
 }

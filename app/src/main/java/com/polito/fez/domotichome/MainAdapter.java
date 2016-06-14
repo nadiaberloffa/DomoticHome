@@ -11,9 +11,6 @@ import com.polito.fez.domotichome.datastructure.StateData;
 
 import java.util.List;
 
-/**
- * Created by Nadia on 24/05/2016.
- */
 public class MainAdapter extends ArrayAdapter<StateData> {
 
     private Context context;

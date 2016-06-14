@@ -1,6 +1,7 @@
 package com.polito.fez.domotichome;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.polito.fez.domotichome.datastructure.StateData;
 import com.polito.fez.domotichome.firebase.SingletonCallback;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         assert navigationView != null;
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -66,9 +69,11 @@ public class MainActivity extends AppCompatActivity
                 statesMap = (Map<Integer, List<StateData>>) dataReturned;
 
                 LinearLayout layout = (LinearLayout) findViewById(R.id.lin1);
+                assert layout != null;
                 layout.setVisibility(View.VISIBLE);
 
                 ContentLoadingProgressBar progressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBar);
+                assert progressBar != null;
                 progressBar.setVisibility(View.GONE);
 
                 List<StateData> states = statesMap.entrySet().iterator().next().getValue();
@@ -127,25 +132,31 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        switch (id) {
+            case R.id.nav_send:
+                SharedPreferences sharedPref = getSharedPreferences(getString(R.string.sharedPref), 0);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.remove("email");
+                editor.remove("password");
+                editor.apply();
+                SingletonManager.logout(new SingletonCallback() {
+                    @Override
+                    public void doCallback(Object dataReturned) {
+                        boolean isLogout = (boolean) dataReturned;
+                        if(isLogout){
+                            Toast.makeText(getApplicationContext(),"Logged Out", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                            finish();
+                        }
+                    }
+                });
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

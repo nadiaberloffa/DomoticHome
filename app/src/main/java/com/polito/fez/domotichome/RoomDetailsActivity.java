@@ -72,14 +72,12 @@ public class RoomDetailsActivity extends AppCompatActivity {
 
                     switch (state.getCodeEventType()) {
                         case temperature:
-                            Log.d("debugGiulia","temperature: "+state.getValueRead());
                             temperature = state.getValueRead();
                             txtEditTemp.setText(String.format("%.2f", temperature));
                             txtEditTemp.setText(String.format("%.2f", temperature));
                             txtTemperature.setText(String.format("%.2f", temperature));
                             break;
                         case humidity:
-                            Log.d("debugGiulia","humidity: "+state.getValueRead());
                             humidity = state.getValueRead();
                             txtHumidity.setText(String.format("%.2f", humidity));
                             break;
@@ -89,7 +87,6 @@ public class RoomDetailsActivity extends AppCompatActivity {
                             } else {
                                 lightOn = true;
                             }
-                            Log.d("debugGiulia","light: "+lightOn);
                             break;
                         case warm:
                             if (state.getValueRead() == 0) {
@@ -97,7 +94,6 @@ public class RoomDetailsActivity extends AppCompatActivity {
                             } else {
                                 warmOn = true;
                             }
-                            Log.d("debugGiulia","warmOn: "+warmOn);
                             break;
                     }
                 }
@@ -122,5 +118,4 @@ public class RoomDetailsActivity extends AppCompatActivity {
             }
         });
     }
-
 }
