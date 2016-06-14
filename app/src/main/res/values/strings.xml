@@ -16,12 +16,12 @@
     <string name="title_activity_login">Sign in</string>
     <string name="sharedPref" translatable="false">MySharedPref</string>
     <string name="no_log">You aren\'t log. Please you have to log</string>
-    <string name="error_login">You have wrong the email/password or you aren\'t sign-in, please you contact your supplier</string>
+    <string name="error_login">You have wrong the email/password or you aren\'t register, please you contact your supplier</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (min length: 6 car)</string>
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="prompt_password">Password (min length: 6 character)</string>
+    <string name="action_sign_in">Sign in</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
