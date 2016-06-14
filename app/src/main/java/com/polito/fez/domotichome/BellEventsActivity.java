@@ -68,7 +68,6 @@ public class BellEventsActivity extends AppCompatActivity {
 
         progressBar.setVisibility(View.GONE);
 
-        //TODO: ordinare la lista -> bellList
         Collections.sort(bellList, new Comparator<BellEventData>() {
             @Override//< 0 if lhs is less than rhs, 0 if they are equal, and > 0 if lhs is greater than rhs.
             public int compare(BellEventData lhs, BellEventData rhs) {
