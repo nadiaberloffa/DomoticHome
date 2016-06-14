@@ -13,5 +13,22 @@
     <string name="warm_label">Warm %s</string>
     <string name="bell_label">Bell events</string>
     <string name="room_no_active">No sensor in this room</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="sharedPref" translatable="false">MySharedPref</string>
+    <string name="no_log">You aren\'t log. Please you have to log</string>
+    <string name="error_login">You have wrong the email/password or you aren\'t sign-in, please you contact your supplier</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (min length: 6 car)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
 
 </resources>
