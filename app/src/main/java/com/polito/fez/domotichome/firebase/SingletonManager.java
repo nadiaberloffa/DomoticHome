@@ -18,7 +18,7 @@ import java.util.Map;
  */
 public class SingletonManager {
 
-    private static Map<Integer, List<StateData>> states;
+    private static Map<Integer, List<StateData>> states = null;
 
     private SingletonManager() {}
 
@@ -63,5 +63,34 @@ public class SingletonManager {
         }
     }
 
+    public static void sendLightCommand(int room, int newVal, final SingletonCallback callback) {
 
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference statesRef = database.getReference("commands").child("3").child("valueRead"); // CodeEvent per Light on/off
+        statesRef.setValue(newVal, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if(databaseError == null) {
+                    callback.doCallback(true);
+                } else {
+                    callback.doCallback(false);
+                }
+            }
+        });
+    }
+
+    public static void sendWarmCommand(int room, int newVal, final SingletonCallback callback) {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference statesRef = database.getReference("commands").child("4").child("valueRead"); // CodeEvent per Light on/off
+        statesRef.setValue(newVal, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                if(databaseError == null) {
+                    callback.doCallback(true);
+                } else {
+                    callback.doCallback(false);
+                }
+            }
+        });
+    }
 }

@@ -31,4 +31,5 @@
         completions."
     </string>
 
+    <string name="actual_state_label">Actual state</string>
 </resources>
