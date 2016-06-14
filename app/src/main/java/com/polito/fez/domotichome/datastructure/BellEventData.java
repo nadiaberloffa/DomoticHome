@@ -5,24 +5,24 @@ package com.polito.fez.domotichome.datastructure;
  */
 public class BellEventData {
 
-    private int mySqlId;
-    public int getMySqlId() { return mySqlId; }
-    public void setMySqlId(int _id) { this.mySqlId = _id; }
+    private int MySqlId;
+    public int getMySqlId() { return MySqlId; }
+    public void setMySqlId(int _id) { this.MySqlId = _id; }
 
-    private int room;
-    public int getRoom() { return room; }
-    public void setRoom(int _room) { this.room = _room; }
+    private int Room;
+    public int getRoom() { return Room; }
+    public void setRoom(int _room) { this.Room = _room; }
 
-    private String timestamp;
-    public String getTimestamp() { return timestamp; }
-    public void setTimestamp(String _timestamp) { this.timestamp = _timestamp; }
+    private String Timestamp;
+    public String getTimestamp() { return Timestamp; }
+    public void setTimestamp(String _timestamp) { this.Timestamp = _timestamp; }
 
-    private String path;
-    public String getPath() { return path; }
-    public void setPath(String _path) { this.path = _path; }
+    private String Path;
+    public String getPath() { return Path; }
+    public void setPath(String _path) { this.Path = _path; }
 
     @Override
     public String toString() {
-        return "BellEventData (SQL:" + mySqlId + ") -> timestamp:" + timestamp + ", room:" + room + ", path:" + path;
+        return "BellEventData (SQL:" + MySqlId + ") -> timestamp:" + Timestamp + ", room:" + Room + ", path:" + Path;
     }
 }

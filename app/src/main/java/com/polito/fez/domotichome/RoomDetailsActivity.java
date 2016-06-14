@@ -1,5 +1,6 @@
 package com.polito.fez.domotichome;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
@@ -196,7 +197,8 @@ public class RoomDetailsActivity extends AppCompatActivity {
         this.btnBell.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO
+                Intent intent = new Intent(getApplicationContext(), BellEventsActivity.class);
+                startActivity(intent);
             }
         });
     }

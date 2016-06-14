@@ -10,9 +10,12 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="text_small_margin">8dp</dimen>
     <dimen name="text_padding">3dp</dimen>
+    <dimen name="small_margin">05dp</dimen>
+    <dimen name="standard_margin">10dp</dimen>
+    <dimen name="textNormalSize">15sp</dimen>
+
 
     <dimen name="textSmallSize">13sp</dimen>
-    <dimen name="textNormalSize">15sp</dimen>
     <dimen name="textBigSize">20sp</dimen>
     <dimen name="textTitleSize">22sp</dimen>
     <dimen name="textTemperatureBig">100sp</dimen>

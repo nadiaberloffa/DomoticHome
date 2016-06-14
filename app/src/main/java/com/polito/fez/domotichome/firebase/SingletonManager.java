@@ -12,10 +12,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.polito.fez.domotichome.datastructure.BellEventData;
 import com.polito.fez.domotichome.datastructure.StateData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +27,7 @@ import java.util.Map;
 public class SingletonManager {
 
     private static Map<Integer, List<StateData>> states = null;
+    private static List<BellEventData> bellEvents = null;
     private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     private SingletonManager() {}
@@ -68,6 +71,55 @@ public class SingletonManager {
         } else {
             callback.doCallback(states);
         }
+    }
+
+    public static void getBellEvents(final SingletonCallback callback) {
+        bellEvents = new LinkedList<>();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference statesRef = database.getReference("bell_events");
+
+        statesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snap : dataSnapshot.getChildren()) {
+                    BellEventData bellEventData = snap.getValue(BellEventData.class);
+
+                    if (bellEventData != null) {
+                        bellEvents.add(bellEventData);
+                    }
+                }
+                callback.doCallback(bellEvents);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.doCallback(bellEvents);
+            }
+        });
+    }
+
+    public static void getPathFromStorage(String path,final SingletonCallback callback) {
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference statesRef = database.getReference("storage");
+        statesRef.child(path).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String file = "";
+                if(dataSnapshot!=null) {
+                    file=dataSnapshot.getValue(String.class);
+                }
+                callback.doCallback(file);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                callback.doCallback("");
+            }
+        });
     }
 
     public static void login(final String email, final String password, final SingletonCallback callback) {
