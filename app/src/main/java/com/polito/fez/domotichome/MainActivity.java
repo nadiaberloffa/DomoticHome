@@ -66,49 +66,52 @@ public class MainActivity extends AppCompatActivity
             public void doCallback(Object dataReturned) {
                 statesMap = (Map<Integer, List<StateData>>) dataReturned;
 
-                LinearLayout layout = (LinearLayout) findViewById(R.id.lin1);
-                assert layout != null;
-                layout.setVisibility(View.VISIBLE);
+                if (statesMap != null) {
 
-                ContentLoadingProgressBar progressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBar);
-                assert progressBar != null;
-                progressBar.setVisibility(View.GONE);
+                    LinearLayout layout = (LinearLayout) findViewById(R.id.lin1);
+                    assert layout != null;
+                    layout.setVisibility(View.VISIBLE);
 
-                List<StateData> states = statesMap.entrySet().iterator().next().getValue();
-                TextView txtRoomName = (TextView) room1.findViewById(R.id.txtRoomName);
-                TextView txtTemperature = (TextView) room1.findViewById(R.id.txtTemperature);
-                TextView txtHumidity = (TextView) room1.findViewById(R.id.txtHumidity);
+                    ContentLoadingProgressBar progressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBar);
+                    assert progressBar != null;
+                    progressBar.setVisibility(View.GONE);
 
-                String roomName = String.format(getResources().getString(R.string.room_name), states.get(0).getRoom());
-                txtRoomName.setText(roomName);
+                    List<StateData> states = statesMap.entrySet().iterator().next().getValue();
+                    TextView txtRoomName = (TextView) room1.findViewById(R.id.txtRoomName);
+                    TextView txtTemperature = (TextView) room1.findViewById(R.id.txtTemperature);
+                    TextView txtHumidity = (TextView) room1.findViewById(R.id.txtHumidity);
 
-                for (StateData data: states) {
-                    switch(data.getCodeEventType()) {
-                        case temperature:
-                            String temp = String.format(getResources().getString(R.string.temperature_label), data.getValueRead());
-                            txtTemperature.setText(temp);
-                            break;
-                        case humidity:
-                            String hum = String.format(getResources().getString(R.string.temperature_label), data.getValueRead());
-                            txtHumidity.setText(hum);
-                            break;
+                    String roomName = String.format(getResources().getString(R.string.room_name), states.get(0).getRoom());
+                    txtRoomName.setText(roomName);
+
+                    for (StateData data : states) {
+                        switch (data.getCodeEventType()) {
+                            case temperature:
+                                String temp = String.format(getResources().getString(R.string.temperature_label), data.getValueRead());
+                                txtTemperature.setText(temp);
+                                break;
+                            case humidity:
+                                String hum = String.format(getResources().getString(R.string.temperature_label), data.getValueRead());
+                                txtHumidity.setText(hum);
+                                break;
+                        }
                     }
+
+                    // FOR OTHERS ROOMS
+                    TextView txtRoomName2 = (TextView) room2.findViewById(R.id.txtRoomName);
+                    txtRoomName2.setText("Room 2");
+                    TextView txtTemperature2 = (TextView) room2.findViewById(R.id.txtTemperature);
+                    txtTemperature2.setText(" - ");
+                    TextView txtHumidity2 = (TextView) room2.findViewById(R.id.txtHumidity);
+                    txtHumidity2.setText(" - ");
+
+                    TextView txtRoomName3 = (TextView) room3.findViewById(R.id.txtRoomName);
+                    txtRoomName3.setText("Room 3");
+                    TextView txtTemperature3 = (TextView) room3.findViewById(R.id.txtTemperature);
+                    txtTemperature3.setText(" - ");
+                    TextView txtHumidity3 = (TextView) room3.findViewById(R.id.txtHumidity);
+                    txtHumidity3.setText(" - ");
                 }
-
-                // FOR OTHERS ROOMS
-                TextView txtRoomName2 = (TextView) room2.findViewById(R.id.txtRoomName);
-                txtRoomName2.setText("Room 2");
-                TextView txtTemperature2 = (TextView) room2.findViewById(R.id.txtTemperature);
-                txtTemperature2.setText(" - ");
-                TextView txtHumidity2 = (TextView) room2.findViewById(R.id.txtHumidity);
-                txtHumidity2.setText(" - ");
-
-                TextView txtRoomName3 = (TextView) room3.findViewById(R.id.txtRoomName);
-                txtRoomName3.setText("Room 3");
-                TextView txtTemperature3 = (TextView) room3.findViewById(R.id.txtTemperature);
-                txtTemperature3.setText(" - ");
-                TextView txtHumidity3 = (TextView) room3.findViewById(R.id.txtHumidity);
-                txtHumidity3.setText(" - ");
             }
         });
 

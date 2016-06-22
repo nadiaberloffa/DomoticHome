@@ -9,10 +9,12 @@
     <string name="room_name">Room %d</string>
     <string name="bell_event_title">Bell Events</string>
     <string name="generic_error">There is an error. Try again, please</string>
-    <string name="temperature_label">%.2f °C</string>
+    <string name="temperature_label">%.1f °C</string>
     <string name="humidity_label">%.2f </string>
-    <string name="light_label">Light %s</string>
-    <string name="warm_label">Warm %s</string>
+    <string name="light_label">Light</string>
+    <string name="warm_label">Heating</string>
+    <string name="manual_warm_label">Manual Heating</string>
+    <string name="auto_warm_label">Auto Heating</string>
     <string name="bell_label">Bell events</string>
     <string name="room_no_active">No sensor in this room</string>
     <string name="title_activity_login">Sign in</string>
@@ -42,4 +44,7 @@
     <string name="receive_call">Received call</string>
     <string name="lost_call">Lost call</string>
     <string name="close">Close</string>
+    <string name="frames_title">Frames</string>
+    <string name="modality_heating">Operation of heating</string>
+    <string name="new_temp">Send new temperature: %1f</string>
 </resources>

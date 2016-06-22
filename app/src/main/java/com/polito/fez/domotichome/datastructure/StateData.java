@@ -2,12 +2,9 @@ package com.polito.fez.domotichome.datastructure;
 
 import com.google.firebase.database.Exclude;
 
-/**
- * Created by Nadia on 23/05/2016.
- */
 public class StateData {
 
-    public enum CodeEventType { temperature, humidity, bell, light, warm }
+    public enum CodeEventType { temperature, humidity, bell, light, warm, autoWarm }
 
 
     private int CodeEvent;

@@ -61,17 +61,17 @@ public class BellEventHolder extends RecyclerView.ViewHolder {
 
                     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); //before
                     dialog.setContentView(R.layout.show_photo);
-                    //dialog.setTitle(itemView.getResources().getString(R.string.feedback_alert_modify));
+                    dialog.setTitle(R.string.frames_title);
 
                     ImageView photo1 = (ImageView) dialog.findViewById(R.id.photo1);
-                    if(photo1!=null)
+                    if (photo1 != null)
                         photo1.setImageBitmap(bitmap1);
 
                     byte[] decodedString = Base64.decode(path2, Base64.DEFAULT);
                     Bitmap bitmap2 = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
                     ImageView photo2 = (ImageView) dialog.findViewById(R.id.photo2);
-                    if(photo1!=null)
+                    if (photo1 != null)
                         photo2.setImageBitmap(bitmap2);
 
                     decodedString = Base64.decode(path3, Base64.DEFAULT);
@@ -79,7 +79,7 @@ public class BellEventHolder extends RecyclerView.ViewHolder {
                     img.setImageBitmap(bitmap1);
 
                     ImageView photo3 = (ImageView) dialog.findViewById(R.id.photo3);
-                    if(photo3!=null)
+                    if (photo3 != null)
                         photo3.setImageBitmap(bitmap3);
 
                     Button buttonOk = (Button) dialog.findViewById(R.id.dialogButtonOK);
@@ -89,13 +89,7 @@ public class BellEventHolder extends RecyclerView.ViewHolder {
                             dialog.dismiss();
                         }
                     });
-
-                    /*WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                    lp.copyFrom(dialog.getWindow().getAttributes());
-                    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-                    lp.height = WindowManager.LayoutParams.MATCH_PARENT;*/
                     dialog.show();
-                    //dialog.getWindow().setAttributes(lp);
                 }
             });
         }

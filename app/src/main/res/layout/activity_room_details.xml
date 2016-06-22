@@ -119,6 +119,7 @@
         android:background="@drawable/round_button_trasparent"/>
 
     <LinearLayout
+        android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -171,7 +172,51 @@
             android:padding="@dimen/text_padding"
             android:layout_margin="@dimen/activity_horizontal_margin"
             android:visibility="gone"/>
+    </LinearLayout>
 
-        </LinearLayout>
+        <LinearLayout
+            android:layout_below="@id/linear"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:background="@color/colorAccent"
+            android:layout_height="1dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/standard_margin"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/textNormalSize"
+            android:text="@string/modality_heating"/>
+
+
+        <RadioGroup
+            android:layout_marginTop="@dimen/standard_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/myRadioGroup"
+            android:checkedButton="@+id/auto" >
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/auto"
+            android:text="@string/auto_warm_label" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/manual"
+            android:text="@string/manual_warm_label" />
+        </RadioGroup>
+
+    </LinearLayout>
+
+        
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
