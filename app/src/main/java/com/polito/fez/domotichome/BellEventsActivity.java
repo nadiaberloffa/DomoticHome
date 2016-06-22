@@ -8,7 +8,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.polito.fez.domotichome.datastructure.BellEventData;
 import com.polito.fez.domotichome.firebase.SingletonCallback;
@@ -48,14 +50,18 @@ public class BellEventsActivity extends AppCompatActivity {
 
         bellList = new LinkedList<>();
         progressBar = (ContentLoadingProgressBar)findViewById(R.id.progressBar);
+        assert progressBar != null;
+        progressBar.setVisibility(View.VISIBLE);
 
         SingletonManager.getBellEvents(new SingletonCallback() {
             @Override
             public void doCallback(Object dataReturned) {
                 if (dataReturned != null) {
+                    Log.d("debugGiulia", "callback");
+                    progressBar.setVisibility(View.GONE);
                     bellList = (List<BellEventData>) dataReturned;
                     setRecyclerView();
-                }else{
+                }else {
                     progressBar.setVisibility(View.GONE);
                 }
             }
@@ -66,39 +72,45 @@ public class BellEventsActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = (RecyclerView) this.findViewById(R.id.recyclerView);
 
-        progressBar.setVisibility(View.GONE);
+        if (bellList.size() == 0) {
+            TextView textNoEvents = (TextView) this.findViewById(R.id.textNoEvents);
+            assert textNoEvents != null;
+            textNoEvents.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
+        } else {
 
-        Collections.sort(bellList, new Comparator<BellEventData>() {
-            @Override//< 0 if lhs is less than rhs, 0 if they are equal, and > 0 if lhs is greater than rhs.
-            public int compare(BellEventData lhs, BellEventData rhs) {
+            Collections.sort(bellList, new Comparator<BellEventData>() {
+                @Override
+                //< 0 if lhs is less than rhs, 0 if they are equal, and > 0 if lhs is greater than rhs.
+                public int compare(BellEventData lhs, BellEventData rhs) {
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy HH:mm:ss");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                    try {
+                        Date lhsDate = dateFormat.parse(lhs.getTimestamp());
+                        Date rhsDate = dateFormat.parse(rhs.getTimestamp());
 
-                try {
-                    Date lhsDate = dateFormat.parse(lhs.getTimestamp());
-                    Date rhsDate = dateFormat.parse(rhs.getTimestamp());
+                        Timestamp lhsTime = new java.sql.Timestamp(lhsDate.getTime());
+                        Timestamp rhsTime = new java.sql.Timestamp(rhsDate.getTime());
 
-                    Timestamp lhsTime = new java.sql.Timestamp(lhsDate.getTime());
-                    Timestamp rhsTime = new java.sql.Timestamp(rhsDate.getTime());
-
-                    if (lhsTime.before(rhsTime)) return -1;
-                    else if (lhsTime.equals(rhsTime)) return 0;
-                    else return 1;
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return -1;
+                        if (lhsTime.before(rhsTime)) return -1;
+                        else if (lhsTime.equals(rhsTime)) return 0;
+                        else return 1;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return -1;
+                    }
                 }
-            }
-        });
+            });
 
-        BellEventAdapter adapter = new BellEventAdapter(this,bellList);
-        assert recyclerView != null;
-        recyclerView.setAdapter(adapter);
+            BellEventAdapter adapter = new BellEventAdapter(this, bellList);
+            assert recyclerView != null;
+            recyclerView.setAdapter(adapter);
 
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(llm);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
+            LinearLayoutManager llm = new LinearLayoutManager(this);
+            llm.setOrientation(LinearLayoutManager.VERTICAL);
+            recyclerView.setLayoutManager(llm);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+        }
     }
 }

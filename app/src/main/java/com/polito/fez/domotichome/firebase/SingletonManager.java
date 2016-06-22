@@ -1,6 +1,7 @@
 package com.polito.fez.domotichome.firebase;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -15,20 +16,22 @@ import com.google.firebase.database.ValueEventListener;
 import com.polito.fez.domotichome.datastructure.BellEventData;
 import com.polito.fez.domotichome.datastructure.StateData;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Nadia on 24/05/2016.
- */
 public class SingletonManager {
 
     private static Map<Integer, List<StateData>> states = null;
     private static List<BellEventData> bellEvents = null;
     private static FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     private SingletonManager() {}
 
@@ -76,6 +79,10 @@ public class SingletonManager {
     public static void getBellEvents(final SingletonCallback callback) {
         bellEvents = new LinkedList<>();
 
+        final Date today = new Date();
+        final Date sevenDayBefore = new Date(today.getTime() - 7 * 24 * 3600 * 1000 ); //Subtract n days = today.
+        //Log.d("debugGiulia","date: "+dateFormat.format(today));
+        //Log.d("debugGiulia","date7: "+dateFormat.format(sevenDayBefore));
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference statesRef = database.getReference("bell_events");
 
@@ -87,7 +94,14 @@ public class SingletonManager {
                     BellEventData bellEventData = snap.getValue(BellEventData.class);
 
                     if (bellEventData != null) {
-                        bellEvents.add(bellEventData);
+
+                        try {
+                            Date date = dateFormat.parse(bellEventData.getTimestamp());
+                            if(date.after(sevenDayBefore))
+                                bellEvents.add(bellEventData);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
                 callback.doCallback(bellEvents);
@@ -100,11 +114,11 @@ public class SingletonManager {
         });
     }
 
-    public static void getPathFromStorage(String path,final SingletonCallback callback) {
+    public static void getPathFromStorage(String mySqlId, String path, final SingletonCallback callback) {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference statesRef = database.getReference("storage");
-        statesRef.child(path).addListenerForSingleValueEvent(new ValueEventListener() {
+        final DatabaseReference statesRef = database.getReference("bell_events");
+        statesRef.child(mySqlId).child(path).addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

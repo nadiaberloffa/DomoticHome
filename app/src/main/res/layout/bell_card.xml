@@ -24,6 +24,13 @@
             android:alpha="0.8"
             android:contentDescription="@string/frame" />
 
+        <android.support.v4.widget.ContentLoadingProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:id="@+id/progressBar"
+            android:visibility="visible"/>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"

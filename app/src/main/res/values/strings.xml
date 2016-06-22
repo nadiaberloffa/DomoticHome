@@ -10,6 +10,7 @@
     <string name="bell_event_title">Bell Events</string>
     <string name="generic_error">There is an error. Try again, please</string>
     <string name="temperature_label">%.2f °C</string>
+    <string name="humidity_label">%.2f </string>
     <string name="light_label">Light %s</string>
     <string name="warm_label">Warm %s</string>
     <string name="bell_label">Bell events</string>
@@ -35,4 +36,10 @@
 
     <string name="actual_state_label">Actual state</string>
     <string name="frame">Frame</string>
+    <string name="Logout">Logout</string>
+    <string name="bell_events">Bell Events</string>
+    <string name="no_events">No events in the last 7 days</string>
+    <string name="receive_call">Received call</string>
+    <string name="lost_call">Lost call</string>
+    <string name="close">Close</string>
 </resources>

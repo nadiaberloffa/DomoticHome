@@ -1,11 +1,8 @@
 package com.polito.fez.domotichome;
 
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +14,6 @@ import android.widget.Toast;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.polito.fez.domotichome.datastructure.StateData;
 import com.polito.fez.domotichome.firebase.SingletonCallback;
@@ -30,14 +26,11 @@ import java.util.Map;
 public class RoomDetailsActivity extends AppCompatActivity {
 
     private TextView txtEditTemp, txtHumidity, txtTemperature;
-    private ImageButton btnPlus, btnMinus;
-    private Button btnLightOn, btnLightOff, btnWarmOn, btnWarmOff, btnBell;
+    private Button btnLightOn, btnLightOff, btnWarmOn, btnWarmOff;
     private Map<com.polito.fez.domotichome.datastructure.StateData.CodeEventType, StateData> statesRoom;
     private float temperature;
-    private float humidity;
     private boolean lightOn;
     private boolean warmOn;
-    private ChildEventListener statesListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +60,7 @@ public class RoomDetailsActivity extends AppCompatActivity {
     }
 
     private void setListenerToFirebase() {
-        statesListener = new ChildEventListener() {
+        ChildEventListener statesListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -105,14 +98,15 @@ public class RoomDetailsActivity extends AppCompatActivity {
             case temperature:
                 Log.d("debugGiulia","temperature: "+state.getValueRead());
                 temperature = state.getValueRead();
-                txtEditTemp.setText(String.format("%.2f", temperature));
-                txtEditTemp.setText(String.format("%.2f", temperature));
-                txtTemperature.setText(String.format("%.2f", temperature));
+                String temp = String.format(getResources().getString(R.string.temperature_label), temperature);
+                txtEditTemp.setText(temp);
+                txtTemperature.setText(temp);
                 break;
             case humidity:
                 Log.d("debugGiulia","humidity: "+state.getValueRead());
-                humidity = state.getValueRead();
-                txtHumidity.setText(String.format("%.2f", humidity));
+                float humidity = state.getValueRead();
+                String hum = String.format(getResources().getString(R.string.humidity_label), humidity);
+                txtHumidity.setText(hum);
                 break;
             case light:
                 if (state.getValueRead() == 0) {
@@ -146,13 +140,12 @@ public class RoomDetailsActivity extends AppCompatActivity {
         this.txtEditTemp = (TextView) findViewById(R.id.txtEditTemperature);
         this.txtHumidity = (TextView) findViewById(R.id.txtHumidity);
         this.txtTemperature = (TextView) findViewById(R.id.txtTemperature);
-        this.btnPlus = (ImageButton) findViewById(R.id.btnPlusTemp);
-        this.btnMinus = (ImageButton) findViewById(R.id.btnMinusTemp);
+        ImageButton btnPlus = (ImageButton) findViewById(R.id.btnPlusTemp);
+        ImageButton btnMinus = (ImageButton) findViewById(R.id.btnMinusTemp);
         this.btnLightOn = (Button) findViewById(R.id.btnLightOn);
         this.btnLightOff = (Button) findViewById(R.id.btnLightOff);
         this.btnWarmOn = (Button) findViewById(R.id.btnWarmOn);
         this.btnWarmOff = (Button) findViewById(R.id.btnWarmOff);
-        this.btnBell = (Button) findViewById(R.id.btnBell);
         this.statesRoom = new HashMap<>();
 
         SingletonManager.getStates(new SingletonCallback() {
@@ -170,20 +163,22 @@ public class RoomDetailsActivity extends AppCompatActivity {
             }
         });
 
-        this.btnPlus.setOnClickListener(new View.OnClickListener() {
+        assert btnPlus != null;
+        btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 temperature += 0.5f;
-                txtEditTemp.setText(String.format("%.2f", temperature));
+                txtEditTemp.setText(String.format(getResources().getString(R.string.temperature_label), temperature));
             }
         });
 
-        this.btnMinus.setOnClickListener(new View.OnClickListener() {
+        assert btnMinus != null;
+        btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if ((temperature - 0.5f) >= 0) {
                     temperature -= 0.5f;
-                    txtEditTemp.setText(String.format("%.2f", temperature));
+                    txtEditTemp.setText(String.format(getResources().getString(R.string.temperature_label), temperature));
                 }
             }
         });
@@ -193,21 +188,13 @@ public class RoomDetailsActivity extends AppCompatActivity {
 
         this.btnWarmOn.setOnClickListener(warmListener);
         this.btnWarmOff.setOnClickListener(warmListener);
-
-        this.btnBell.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), BellEventsActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
     View.OnClickListener warmListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
 
-            int newValue = -1;
+            int newValue;
             if(warmOn) { // Voglio spegnere il riscaldamento
                 newValue = 0;
             } else { // Voglio accendere il riscaldamento
@@ -218,12 +205,7 @@ public class RoomDetailsActivity extends AppCompatActivity {
                 @Override
                 public void doCallback(Object dataReturned) {
                     boolean result = (boolean) dataReturned;
-
-                    if(result) {
-                        warmOn = false;
-                    } else {
-                        warmOn = true;
-                    }
+                    warmOn = !result;
                 }
             });
         }
@@ -233,7 +215,7 @@ public class RoomDetailsActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            int newValue = -1;
+            int newValue;
             if(lightOn) { // Voglio spegnere la luce
                 newValue = 0;
             } else { // Voglio accendere la luce
@@ -244,12 +226,7 @@ public class RoomDetailsActivity extends AppCompatActivity {
                 @Override
                 public void doCallback(Object dataReturned) {
                     boolean result = (boolean) dataReturned;
-
-                    if(result) {
-                        lightOn = false;
-                    } else {
-                        lightOn = true;
-                    }
+                    lightOn = !result;
                 }
             });
         }
