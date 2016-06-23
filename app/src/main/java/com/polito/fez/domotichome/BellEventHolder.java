@@ -44,10 +44,10 @@ public class BellEventHolder extends RecyclerView.ViewHolder {
         txtEventDate.setText(current.getTimestamp());
 
         if (path1.equals("")) {
-            txtEvent.setText(R.string.lost_call);
+            txtEvent.setText(R.string.receive_call);
             img.setVisibility(View.GONE);
         } else {
-            txtEvent.setText(R.string.receive_call);
+            txtEvent.setText(R.string.lost_call);
 
             byte[] decodedString = Base64.decode(path1, Base64.DEFAULT);
             bitmap1 = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);

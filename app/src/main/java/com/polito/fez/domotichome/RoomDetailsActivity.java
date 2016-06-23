@@ -31,12 +31,12 @@ public class RoomDetailsActivity extends AppCompatActivity {
     private TextView txtEditTemp, txtHumidity, txtTemperature;
     private Button btnLightOn, btnLightOff, btnWarmOn, btnWarmOff;
     private Map<com.polito.fez.domotichome.datastructure.StateData.CodeEventType, StateData> statesRoom;
-    private float temperature;
+    private double temperature;
     private boolean lightOn;
     ImageButton btnPlus, btnMinus;
     RadioButton auto, manual;
     private boolean warmOn;
-    CountDownTimer timer = null;
+    CountDownTimer tempTimer = null, modeTimer = null;
     int secondiTimer = 3;
 
     @Override
@@ -136,16 +136,18 @@ public class RoomDetailsActivity extends AppCompatActivity {
                 Log.d("debugGiulia", "warmOn: " + warmOn);
                 break;
             case autoWarm:
-                if (state.getValueRead() == 0) {
+                if (state.getValueRead() == 1) {
                     auto.setChecked(true);
-                    btnPlus.setClickable(false);
+                    btnPlus.setClickable(true);
                     btnPlus.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_gray_48dp));
 
                     assert btnMinus != null;
-                    btnMinus.setClickable(false);
+                    btnMinus.setClickable(true);
                     btnMinus.setImageDrawable(getResources().getDrawable(R.drawable.ic_remove_gray_48dp));
                 } else {
                     manual.setChecked(true);
+                    btnPlus.setClickable(false);
+                    btnMinus.setClickable(false);
                 }
                 Log.d("debugGiulia", "warmOn: " + warmOn);
                 break;
@@ -161,15 +163,9 @@ public class RoomDetailsActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 // find which radio button is selected
                 if (checkedId == R.id.auto) {
-                    assert btnPlus != null;
-                    btnPlus.setClickable(false);
-                    btnPlus.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_gray_48dp));
 
-                    assert btnMinus != null;
-                    btnMinus.setClickable(false);
-                    btnMinus.setImageDrawable(getResources().getDrawable(R.drawable.ic_remove_gray_48dp));
+                    modeTimer = null;
 
-                } else if (checkedId == R.id.manual) {
                     assert btnPlus != null;
                     btnPlus.setOnClickListener(buttonPlus);
                     btnPlus.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_orange_48dp));
@@ -177,6 +173,17 @@ public class RoomDetailsActivity extends AppCompatActivity {
                     assert btnMinus != null;
                     btnMinus.setOnClickListener(buttonMin);
                     btnMinus.setImageDrawable(getResources().getDrawable(R.drawable.ic_remove_orange_48dp));
+                } else if (checkedId == R.id.manual) {
+
+                    setModeTimer();
+
+                    assert btnPlus != null;
+                    btnPlus.setClickable(false);
+                    btnPlus.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_gray_48dp));
+
+                    assert btnMinus != null;
+                    btnMinus.setClickable(false);
+                    btnMinus.setImageDrawable(getResources().getDrawable(R.drawable.ic_remove_gray_48dp));
                 }
             }
         });
@@ -198,6 +205,18 @@ public class RoomDetailsActivity extends AppCompatActivity {
         this.btnWarmOff = (Button) findViewById(R.id.btnWarmOff);
         this.statesRoom = new HashMap<>();
 
+        assert btnPlus != null;
+        btnPlus.setOnClickListener(buttonPlus);
+
+        assert btnMinus != null;
+        btnMinus.setOnClickListener(buttonMin);
+
+        this.btnLightOn.setOnClickListener(lightListener);
+        this.btnLightOff.setOnClickListener(lightListener);
+
+        this.btnWarmOn.setOnClickListener(warmListener);
+        this.btnWarmOff.setOnClickListener(warmListener);
+
         SingletonManager.getStates(new SingletonCallback() {
             @Override
             public void doCallback(Object dataReturned) {
@@ -212,17 +231,7 @@ public class RoomDetailsActivity extends AppCompatActivity {
             }
         });
 
-        assert btnPlus != null;
-        btnPlus.setOnClickListener(buttonPlus);
 
-        assert btnMinus != null;
-        btnMinus.setOnClickListener(buttonMin);
-
-        this.btnLightOn.setOnClickListener(lightListener);
-        this.btnLightOff.setOnClickListener(lightListener);
-
-        this.btnWarmOn.setOnClickListener(warmListener);
-        this.btnWarmOff.setOnClickListener(warmListener);
     }
 
     View.OnClickListener buttonPlus = new View.OnClickListener() {
@@ -230,33 +239,51 @@ public class RoomDetailsActivity extends AppCompatActivity {
         public void onClick(View v) {
             temperature += 0.5f;
             txtEditTemp.setText(String.format(getResources().getString(R.string.temperature_label), temperature));
-            setTimer();
+            setTempTimer();
         }
     };
 
-    private void setTimer() {
-        if(timer==null){
-            timer = new CountDownTimer(60*secondiTimer,1) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                }
+    private void setTempTimer() {
 
-                public void onFinish() {
-                    timer.cancel();
-                    timer=null;
+        tempTimer = new CountDownTimer(60*secondiTimer, 1) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
 
-                    SingletonManager.sendManualCommand(1, temperature, new SingletonCallback() {
-                        @Override
-                        public void doCallback(Object dataReturned) {
-                            Toast.makeText(RoomDetailsActivity.this, getString(R.string.new_temp,temperature), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            public void onFinish() {
+                tempTimer.cancel();
+                tempTimer = null;
 
+                SingletonManager.sendManualCommand(1, temperature, new SingletonCallback() {
+                    @Override
+                    public void doCallback(Object dataReturned) {
+                        Toast.makeText(RoomDetailsActivity.this, getString(R.string.new_temp, temperature), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }.start();
+    }
 
+    private void setModeTimer() {
+        modeTimer = new CountDownTimer(60*secondiTimer, 1) {
+            @Override
+            public void onTick(long millisUntilFinished) {
 
-                }
-            }.start();
-        }
+            }
+
+            @Override
+            public void onFinish() {
+                modeTimer.cancel();
+                modeTimer = null;
+
+                SingletonManager.sendManualCommand(1, -1, new SingletonCallback() {
+                    @Override
+                    public void doCallback(Object dataReturned) {
+                        Toast.makeText(RoomDetailsActivity.this, getString(R.string.man_mode), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }.start();
     }
 
     View.OnClickListener buttonMin = new View.OnClickListener() {
@@ -265,7 +292,7 @@ public class RoomDetailsActivity extends AppCompatActivity {
             if ((temperature - 0.5f) >= 0) {
                 temperature -= 0.5f;
                 txtEditTemp.setText(String.format(getResources().getString(R.string.temperature_label), temperature));
-                setTimer();
+                setTempTimer();
             }
         }
     };

@@ -18,5 +18,5 @@
     <dimen name="textSmallSize">13sp</dimen>
     <dimen name="textBigSize">20sp</dimen>
     <dimen name="textTitleSize">22sp</dimen>
-    <dimen name="textTemperatureBig">100sp</dimen>
+    <dimen name="textTemperatureBig">85sp</dimen>
 </resources>

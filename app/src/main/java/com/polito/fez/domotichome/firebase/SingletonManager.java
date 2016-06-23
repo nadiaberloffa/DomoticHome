@@ -177,7 +177,7 @@ public class SingletonManager {
         });
     }
 
-    public static void sendManualCommand(int room, float newVal, final SingletonCallback callback) {
+    public static void sendManualCommand(int room, double newVal, final SingletonCallback callback) {
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference statesRef = database.getReference("commands").child("5").child("valueRead");

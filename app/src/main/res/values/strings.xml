@@ -45,6 +45,7 @@
     <string name="lost_call">Lost call</string>
     <string name="close">Close</string>
     <string name="frames_title">Frames</string>
-    <string name="modality_heating">Operation of heating</string>
+    <string name="modality_heating">Operations mode</string>
     <string name="new_temp">Send new temperature: %1f</string>
+    <string name="man_mode">Heating system set to MANUAL mode</string>
 </resources>
